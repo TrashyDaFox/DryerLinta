@@ -34,5 +34,6 @@ public sealed record LayerProperties (string Name, bool Hidden, double Opacity, 
 		layer.Opacity = Opacity;
 		layer.Hidden = Hidden;
 		layer.BlendMode = BlendMode;
+		// layer.Bumpscosity = Bumpscosity;
 	}
 }

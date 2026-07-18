@@ -45,6 +45,7 @@ public sealed partial class LayerPropertiesDialog
 	private Gtk.CheckButton visibility_checkbox;
 	private Gtk.SpinButton opacity_spinner;
 	private Gtk.Scale opacity_slider;
+	private Gtk.Scale bumpscosity;
 	private Gtk.ComboBoxText blend_combo_box;
 
 	private WorkspaceManager workspace = null!; // NRT - set by factory method
@@ -101,6 +102,8 @@ public sealed partial class LayerPropertiesDialog
 		Gtk.Box opacityBox = Gtk.Box.New (Gtk.Orientation.Horizontal, spacing);
 		opacityBox.Append (opacitySpinner);
 		opacityBox.Append (opacitySlider);
+		Gtk.Scale bumpscosity = Gtk.Scale.NewWithRange (Gtk.Orientation.Horizontal, 0, 100, 1);
+		Gtk.Label bumpscosityLabel = Gtk.Label.New (Translations.GetString ("Bumpscosity:"));
 
 		Gtk.Grid grid = Gtk.Grid.New ();
 		grid.RowSpacing = spacing;
@@ -113,6 +116,8 @@ public sealed partial class LayerPropertiesDialog
 		grid.Attach (blendComboBox, 1, 2, 1, 1);
 		grid.Attach (opacityLabel, 0, 3, 1, 1);
 		grid.Attach (opacityBox, 1, 3, 1, 1);
+		grid.Attach (bumpscosityLabel, 0, 4, 1, 1);
+		grid.Attach (bumpscosity, 1, 4, 1, 1);
 
 		// --- Initialization (Gtk.Window)
 
@@ -181,7 +186,6 @@ public sealed partial class LayerPropertiesDialog
 		current_layer_hidden = currentLayerHidden;
 		current_layer_opacity = currentLayerOpacity;
 		current_layer_blend_mode = currentLayerBlendMode;
-
 		initial_properties = initialProperties;
 	}
 
@@ -232,6 +236,16 @@ public sealed partial class LayerPropertiesDialog
 	{
 		opacity_slider.SetValue (opacity_spinner.Value);
 		UpdateOpacity ();
+	}
+
+	private void OnBumpscosityChanged (object? sender, EventArgs e)
+	{
+		Document doc = workspace.ActiveDocument;
+
+		doc.Layers.CurrentUserLayer.Bumpscosity = bumpscosity.GetValue();
+
+		if (doc.Layers.SelectionLayer != null)
+			doc.Layers.SelectionLayer.Bumpscosity = bumpscosity.GetValue();
 	}
 
 	private void UpdateOpacity ()

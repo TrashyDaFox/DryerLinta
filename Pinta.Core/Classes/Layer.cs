@@ -34,6 +34,7 @@ public class Layer : ObservableObject
 {
 	private double opacity;
 	private bool hidden;
+	private double bumpscosity;
 	private string name;
 	private BlendMode blend_mode;
 
@@ -52,6 +53,7 @@ public class Layer : ObservableObject
 		this.hidden = hidden;
 		this.opacity = opacity;
 		this.name = name;
+		// this.bumpscosity = bumpscosity;
 		blend_mode = BlendMode.Normal;
 
 		Transform = CairoExtensions.CreateIdentityMatrix ();
@@ -62,6 +64,7 @@ public class Layer : ObservableObject
 
 	public static string OpacityProperty { get; } = nameof (Opacity);
 	public static string HiddenProperty { get; } = nameof (Hidden);
+	public static string BumpscosityProperty { get; } = nameof (Bumpscosity);
 	public static string NameProperty { get; } = nameof (Name);
 	public static string BlendModeProperty { get; } = nameof (BlendMode);
 
@@ -73,6 +76,11 @@ public class Layer : ObservableObject
 	public bool Hidden {
 		get => hidden;
 		set { if (hidden != value) SetValue (HiddenProperty, ref hidden, value); }
+	}
+
+	public double Bumpscosity {
+		get => bumpscosity;
+		set { SetValue(BumpscosityProperty, ref bumpscosity, value); }
 	}
 
 	public string Name {
